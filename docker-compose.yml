@@ -8,7 +8,8 @@ services:
       POSTGRES_PASSWORD: dev_user
       POSTGRES_DB: db
     volumes:
-      - ./sql-scripts:/docker-entrypoint-initdb.d
+      - ./postgres:/postgres-init
+    entrypoint: /postgres-init/init-script.sh
     networks:
       - app-network
     ports:
