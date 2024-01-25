@@ -11,13 +11,16 @@ services:
       - ./sql-scripts:/docker-entrypoint-initdb.d
     networks:
       - app-network
+    ports:
+      - "5432:5432"
 
   tondeuse-app:
     image: openjdk:17
     volumes:
       - ./build/libs:/app
+      - ./src/test/resources:/input-file
     working_dir: /app
-    command: java -jar kata-tondeuse-0.0.1-SNAPSHOT.jar
+    command: java -jar kata-tondeuse-0.0.1-SNAPSHOT.jar input.file=/input-file/testInput.txt
     depends_on:
       - postgres
     networks:
