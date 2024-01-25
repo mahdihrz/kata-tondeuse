@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: dev_user
+      POSTGRES_PASSWORD: dev_user
+      POSTGRES_DB: db
+    volumes:
+      - ./sql-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - app-network
+
+  tondeuse-app:
+    image: openjdk:17
+    volumes:
+      - ./build/libs:/app
+    working_dir: /app
+    command: java -jar kata-tondeuse-0.0.1-SNAPSHOT.jar
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
