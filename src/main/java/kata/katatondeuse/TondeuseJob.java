@@ -33,7 +33,7 @@ public class TondeuseJob implements Job {
     public void execute(JobExecution execution) {
         JobParameters jobParameters = execution.getJobParameters();
         String inputFile = jobParameters.getString("input.file");
-        System.out.println("processing tondeuse from file " + inputFile);
+        logger.debug("processing tondeuse from file " + inputFile);
 
         Terrain terrain;
         List<Tondeuse> tondeuses = new ArrayList<>();
@@ -45,7 +45,7 @@ public class TondeuseJob implements Job {
             if ((firstLine = br.readLine()) != null) {
                 String[] terrainCoordinates = firstLine.split(" ");
                 terrain = new Terrain(Integer.parseInt(terrainCoordinates[0]), Integer.parseInt(terrainCoordinates[1]));
-                logger.info(terrain.toString());
+                logger.debug(terrain.toString());
 
             } else {
                 throw new TondeuseException("no lines in file");
@@ -55,7 +55,7 @@ public class TondeuseJob implements Job {
                 String[] tondeuseCoordinates = tondeuseLine.split(" ");
                 Tondeuse tondeuse = new Tondeuse(Integer.parseInt(tondeuseCoordinates[0]), Integer.parseInt(tondeuseCoordinates[1]), tondeuseCoordinates[2].charAt(0), terrain);
                 tondeuses.add(tondeuse);
-                logger.info("Tondeuse init:" + tondeuse);
+                logger.debug("Tondeuse init:" + tondeuse);
                 tondeuseService.processInstructions(tondeuse, instructionLine);
             }
 
